@@ -3,7 +3,12 @@
   "compilerOptions": {
     "types": [
       "jest"
-    ]
+    ],
+    "jsx": "react-native",       // 🔥 add this line
+    "strict": false,             // optional, safer for now
+    "allowJs": true,             // allows JS files in project
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   },
   "include": [
     "**/*.ts",
