@@ -10,10 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native/new-app-screen": "0.83.1",
     "@react-navigation/bottom-tabs": "^7.9.0",
     "@react-navigation/native": "^7.1.26",
     "@react-navigation/native-stack": "^7.9.0",
+    "axios": "^1.13.2",
     "nativewind": "^4.2.1",
     "react": "19.2.0",
     "react-hook-form": "^7.70.0",
@@ -23,7 +25,8 @@
     "react-native-screens": "^4.19.0",
     "react-native-vector-icons": "^10.3.0",
     "react-native-worklets": "^0.7.1",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
