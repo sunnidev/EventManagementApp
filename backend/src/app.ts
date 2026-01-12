@@ -19,7 +19,7 @@ const limiter = rateLimit({
     message: 'To many request from this IP, please try agin later'
 })
 
-app.use("/api/vi/auth", authRoutes)
+app.use("/api/v1/auth", authRoutes)
 
 // Login Middleware
 
@@ -39,8 +39,9 @@ app.use((req, res, next) => {
 
 const port = 3000
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`)
-})
+app.listen(port, "0.0.0.0", () => {
+  console.log("Server running on port 3000");
+});
+
 
 export default app
