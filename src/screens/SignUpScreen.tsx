@@ -3,6 +3,8 @@ import React, { useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
+import { signup } from '../api/apiClient'
+import { useAuthStore } from '../store/useAuthStore'
 
 type FormValues = {
   name: string,
@@ -14,6 +16,8 @@ type FormValues = {
 }
 
 const SignUpScreen = () => {
+
+  const {setAuth} = useAuthStore();
 
   const { control, handleSubmit, watch, formState } = useForm<FormValues>({
     defaultValues: {
@@ -37,6 +41,22 @@ const SignUpScreen = () => {
     const thresholds = [3, 6, 8, 10]
     return thresholds.map((t) => len >= t)
   }, [password])
+
+  const onSubmit = async(data: FormValues) => {
+    try {
+      setErrroMessage(null)
+      console.log('Sign up request data',data)
+      const {accessToken, refreshToken, user} = await signup({
+        name:data.name,
+        email:data.email,
+        password:data.password
+      });
+      setAuth(user, accessToken, refreshToken)
+    } catch (error:any) {
+      console.error('signup error', error)
+      setErrroMessage(error.message)
+    }
+  }
 
   return (
     <SafeAreaView className='flex-1 bg-[#fbfbfb]'>
@@ -235,8 +255,10 @@ const SignUpScreen = () => {
             )}
           </View>
 
-          <TouchableOpacity className={`py-4 rounded-full mb-4 items-center ${isValid ? 'bg-gray-900' : 'bg-gray-200'}`}>
-            <Text>Sign Up</Text>
+          <TouchableOpacity 
+          onPress={handleSubmit(onSubmit)}
+          className={`py-4 rounded-full mb-4 items-center ${isValid ? 'bg-gray-900' : 'bg-gray-200'}`}>
+            <Text className='text-white'>Sign Up</Text>
           </TouchableOpacity>
 
           {errorMessage && (

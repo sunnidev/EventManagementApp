@@ -4,12 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootRoutes, RootStackParamList } from '../Routes'
 import AuthNavigator from './AuthNavigator'
 import MainStackNavigator from './MainStackNavigator'
+import { useAuthStore } from '../../store/useAuthStore'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const RootNavigator = () => {
-    const isAuthenticated = false
+    const { isAuthenticated } = useAuthStore()
     return (
-        <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isAuthenticated ? (
                 <Stack.Screen name={RootRoutes.MainTabs} component={MainStackNavigator} />
             ) : (
