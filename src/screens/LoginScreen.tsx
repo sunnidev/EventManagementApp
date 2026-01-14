@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
 import { AuthRoutes } from '../navigation/Routes';
+import { login } from '../api/apiClient';
+import { useAuthStore } from '../store/useAuthStore';
 
 type LoginValues = {
   email: string;
@@ -19,6 +21,7 @@ const GOOGLE_ICON = 'https://upload.wikimedia.org/wikimedia/commons/5/53/Google_
 const LoginScreen = () => {
 
   const navigation = useNavigation<any>()
+  const {setAuth} = useAuthStore()
   const { control, handleSubmit, formState } = useForm<LoginValues>({
     defaultValues: { email: '', password: '' },
     mode: 'onChange'
@@ -27,6 +30,16 @@ const LoginScreen = () => {
   const { errors, isValid } = formState;
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrroMessage] = useState<string | null>(null)
+
+  const onSubmit = async (data: LoginValues) => {
+    try {
+      setErrroMessage(null)
+      const { accessToken, refreshToken, user } = await login(data)
+      setAuth(user,accessToken,refreshToken)
+    } catch (error: any) {
+      setErrroMessage(error.response?.data?.message || error.message)
+    }
+  }
 
   return (
     <SafeAreaView className='flex-1 bg-white'>
@@ -151,7 +164,7 @@ const LoginScreen = () => {
             <Text className='text-teal-600 font-semibold'>Forgot Password</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity className={`py-4 rounded-full mb-4 items-center ${isValid ? 'bg-gray-900' : 'bg-gray-200'}`}>
+          <TouchableOpacity onPress={handleSubmit(onSubmit)} className={`py-4 rounded-full mb-4 items-center ${isValid ? 'bg-gray-900' : 'bg-gray-200'}`}>
             <Text className={`text-lg font-semibold ${isValid ? 'text-white' : 'text-gray-500'}`}>Log In</Text>
           </TouchableOpacity>
 

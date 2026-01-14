@@ -34,8 +34,8 @@ async function StartServer() {
         await withRetry(() => prisma.$connect());
         console.log('Connected to MongoDB');
 
-        const server = app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        const server = app.listen(Number(PORT), '0.0.0.0', () => {
+            console.log(`Server running on port ${PORT}`);
         });
 
         server.on("error", (err) => console.error('Server error', err));
@@ -47,7 +47,7 @@ async function StartServer() {
 
 StartServer();
 
-process.on("SIGTERM", async()) => {
+process.on("SIGTERM", async () => {
     await prisma.$disconnect();
     process.exit(0)
-}
+})
